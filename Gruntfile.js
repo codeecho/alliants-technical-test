@@ -64,7 +64,23 @@ module.exports = function(grunt) {
     }
   });
 
-  //<humphrey:config:insert>//
+  merge(config, {
+	compress: {
+		dist: {
+			options: {
+				mode: "tgz",
+				archive: 'dist/<%= pkg.name %>.tar.gz'
+			},
+			files: [{
+				expand: true,
+				src: ['**/*'],
+				cwd: "app",
+				dest: '',
+			}]
+		}
+	}
+});
+//<humphrey:config:insert>//
 
   grunt.initConfig(config);
 
@@ -72,13 +88,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask("do-wiredep", ["wiredep"]);
   grunt.registerTask("do-serve", ["build", "express", "open", "watch"]);
-  //<humphrey:subtask:insert>//
+  grunt.registerTask("do-compress", ["compress"]);
+//<humphrey:subtask:insert>//
 
   grunt.registerTask("do-setup", []);
   grunt.registerTask("do-validate", []);
   grunt.registerTask("do-build", ["do-wiredep"]);
   grunt.registerTask("do-test", []);
-  grunt.registerTask("do-package", []);
+  grunt.registerTask("do-package", ["do-compress"]);
   grunt.registerTask("do-archive", []);
   grunt.registerTask("do-deploy", []);
 
