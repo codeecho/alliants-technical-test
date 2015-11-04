@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="AddressBook"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Alliants Technical Test</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <!-- bower:css -->
+	    <!-- endbower -->
+	    <!-- bower:js -->
+	    <!-- endbower -->
+  		<script src="js/controllers.js"></script>
+    </head>
+    <body ng-controller="AddressBookController as vm">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div growl></div>
+
+        <div class="container-fluid">
+
+        	<div class="page-header" style="text-align:center">
+			  <h1>Address Book</h1>
+			</div>
+
+	        <form>
+	        	<div class="form-group">
+	        		<input type="text" class="form-control" ng-model="vm.searchFilter" placeholder="Search"/>
+	        	</div>
+	        </form>
+
+	        <uib-accordion closeOthers="true">
+	        	<uib-accordion-group ng-repeat="contact in vm.contacts | filter:vm.searchFilter | orderBy:'surname'" heading="{{contact.first_name}} {{contact.surname}}">
+			      <table class="table">
+			      	<tr>
+			      		<th>Phone Number</th>
+			      		<td>{{contact.phone_number}}</td>
+			      	</tr>
+			      	<tr>
+			      		<th>Email</th>
+			      		<td>{{contact.email}}</td>
+			      	</tr>
+			      	<tr>
+			      		<th>Address</th>
+			      		<td>{{contact.address}}</td>
+			      	</tr>
+			      </table>
+			      <button class="btn btn-block btn-primary" type="button" ng-click="vm.openUpdateContactModal(contact)">Update</button>
+				  <button class="btn btn-block btn-danger" type="button" ng-click="vm.openDeleteContactModal(contact)">Delete</button>
+			    </uib-accordion-group>
+	    	</uib-accordion>
+
+	    	<button class="btn btn-lg btn-block btn-primary" type="button" ng-click="vm.openAddContactModal()">Add a Contact</button>
+
+			<script type="text/ng-template" id="contactModal">
+				<form ng-submit="ok()">
+			        <div class="modal-header">
+			            <h3 class="modal-title">{{title}}</h3>
+			        </div>
+			        <div class="modal-body">
+			            	<div class="form-group">
+			            		<label>First Name*</label>
+			            		<input type="text" class="form-control" ng-model="contact.first_name" placeholder="First name" required/>
+			            	</div>
+			            	<div class="form-group">
+			            		<label>Surname*</label>
+			            		<input type="text" class="form-control" ng-model="contact.surname" placeholder="Surname" required/>
+			            	</div>
+			            	<div class="form-group">
+			            		<label>Phone Number</label>
+			            		<input type="text" class="form-control" ng-model="contact.phone_number" placeholder="Phone number" pattern="[0-9 ]*"/>
+			            	</div>
+			            	<div class="form-group">
+			            		<label>Email</label>
+			            		<input type="email" class="form-control" ng-model="contact.email" placeholder="Email"/>
+			            	</div>
+			            	<div class="form-group">
+			            		<label>Address</label>
+			            		<input type="text" class="form-control" ng-model="contact.address" placeholder="Address"/>
+			            	</div>
+			        </div>
+			        <div class="modal-footer">
+			            <button class="btn btn-primary" type="submit">OK</button>
+			            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+			        </div>
+		        </form>
+	    	</script>
+
+	    	<script type="text/ng-template" id="deleteContactModal">
+		        <div class="modal-header">
+		            <h3 class="modal-title">Delete Contact</h3>
+		        </div>
+		        <div class="modal-body">
+		            	<p>Are you sure you want to delete {{contact.first_name}} {{contact.surname}}?</p>
+		        </div>
+		        <div class="modal-footer">
+		            <button class="btn btn-primary" type="button" ng-click="yes()">Yes</button>
+		            <button class="btn btn-warning" type="button" ng-click="no()">No</button>
+		        </div>
+	    	</script>
+
+    	</div>
+
+    </body>
+</html>
